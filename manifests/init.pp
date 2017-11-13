@@ -2,6 +2,7 @@
 #
 # This class installs and configures a Symantec BackupExec agent on Linux
 #
+#
 class backupexec (
     $pkgname = $backupexec::params::pkgname,
 ) inherits backupexec::params {
@@ -35,14 +36,14 @@ class backupexec (
     before => Service['VRTSralus.init'],
   }
 
-  service { 'VRTSralus.init':
-    ensure     => running,
-    enable     => true,
-    hasstatus  => false,
-    hasrestart => true,
-    pattern    => '/opt/VRTSralus/bin/beremote',
-    require    => Package[$backupexec::params::pkgname],
-  }
+#  service { 'VRTSralus.init':
+#    ensure     => running,
+#    enable     => true,
+#    hasstatus  => false,
+#    hasrestart => true,
+#    pattern    => '/opt/VRTSralus/bin/beremote',
+#    require    => Package[$backupexec::params::pkgname],
+#  }
 
   file { '/opt/VRTSralus/data':
     ensure  => 'directory',
