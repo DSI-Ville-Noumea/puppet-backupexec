@@ -14,7 +14,7 @@ class backupexec (
     gid       => '0',
     groups    => 'beoper',
     require   => Group['beoper'],
-    passsword => $::beuser_pwd,
+    passsword => $::beoper_pwd,
   }
 
   package { $pkgname:
