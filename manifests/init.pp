@@ -6,16 +6,18 @@
 class backupexec (
     $pkgname = $backupexec::params::pkgname,
 ) inherits backupexec::params {
-  group { 'beoper':
-    ensure => present,
-  }
-  user { 'beuser':
-    ensure    => present,
-    gid       => '0',
-    groups    => 'beoper',
-    require   => Group['beoper'],
-    passsword => $::beoper_pwd,
-  }
+  # group { 'beoper':
+  #   ensure => present,
+  # }
+  # user { 'beuser':
+  #   ensure    => present,
+  #   gid       => '0',
+  #   groups    => 'beoper',
+  #   require   => Group['beoper'],
+  #   passsword => $::beoper_pwd,
+  # }
+
+  create_resources(user_mgt, hiera('backupexec::init::user_beoper'))
 
   package { $pkgname:
     ensure  => present,
