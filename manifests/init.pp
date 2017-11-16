@@ -26,7 +26,7 @@ class backupexec (
 
   file { '/etc/VRTSralus/ralus.cfg':
     ensure  => file,
-    owner   => 'beuser',
+    owner   => 'beoper',
     group   => 'beoper',
     mode    => '0644',
     content => template('backupexec/ralus.cfg.erb'),
@@ -50,7 +50,7 @@ class backupexec (
 
   file { '/opt/VRTSralus/data':
     ensure  => 'directory',
-    owner   => 'beuser',
+    owner   => 'beoper',
     group   => 'beoper',
     mode    => '0770',
     require => Package[$backupexec::params::pkgname],
