@@ -21,7 +21,7 @@ class backupexec (
 
   package { $pkgname:
     ensure  => present,
-    #require => User['beuser'],
+    require => User['beoper'],
   }
 
   file { '/etc/VRTSralus/ralus.cfg':
