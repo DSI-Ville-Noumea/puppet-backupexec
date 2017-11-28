@@ -56,12 +56,12 @@ class backupexec (
     require => Package[$backupexec::params::pkgname],
   }
   
-  firewall { 'agentBE': 
+  firewall { 'agent BE': 
     #chain  => 'ETH0-INPUT',
     source => '172.16.4.80',
     state  => ['NEW'],
     proto  => 'tcp',
-    dport  => '1024-65535',
+    dport  => '[1024-65535]',
     action => 'accept',  
   }
 }
