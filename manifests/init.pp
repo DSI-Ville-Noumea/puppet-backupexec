@@ -56,7 +56,7 @@ class backupexec (
     require => Package[$backupexec::params::pkgname],
   }
   
-  firewall { 'agent BE': 
+  firewall { '500 agent BE': 
     #chain  => 'ETH0-INPUT',
     source => '172.16.4.80',
     state  => ['NEW'],
