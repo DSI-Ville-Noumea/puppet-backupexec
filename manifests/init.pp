@@ -16,6 +16,11 @@ class backupexec (
      require   => Group['beoper'],
    }
 
+  package { $pkgname:
+    ensure  => present,
+    require => User['beuser'],
+  }
+
   file { '/etc/VRTSralus/ralus.cfg':
     ensure  => file,
     owner   => 'beuser',
