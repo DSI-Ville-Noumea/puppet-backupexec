@@ -5,6 +5,7 @@
 
 class backupexec (
     $pkgname = $backupexec::params::pkgname,
+    $password = $backupexec::params::password,
 ) inherits backupexec::params {
    group { 'beoper':
      ensure => present,
@@ -14,6 +15,7 @@ class backupexec (
      gid       => '0',
      groups    => 'beoper',
      require   => Group['beoper'],
+     password  => $password,
    }
 
   package { $pkgname:
