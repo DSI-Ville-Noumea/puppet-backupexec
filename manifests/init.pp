@@ -11,15 +11,16 @@ class backupexec (
      ensure => present,
    }
    user { 'beuser':
-     ensure    => present,
-     gid       => '0',
-     groups    => 'beoper',
-     require   => Group['beoper'],
-     password  => $password,
+     ensure     => present,
+     gid        => '0',
+     groups     => 'beoper',
+     managehome => true,
+     require    => Group['beoper'],
+     password   => $password,
    }
 
   package { $pkgname:
-    ensure  => present,
+    ensure  => latest,
     require => User['beuser'],
   }
 
@@ -30,6 +31,7 @@ class backupexec (
     mode    => '0644',
     content => template('backupexec/ralus.cfg.erb'),
     require => Package[$backupexec::params::pkgname],
+    notify  => Service['VRTSralus.init'],
   }
 
   file { '/etc/init.d/VRTSralus.init':
