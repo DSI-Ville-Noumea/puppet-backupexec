@@ -24,15 +24,15 @@ class backupexec (
     require => User['beuser'],
   }
 
-  file { '/etc/VRTSralus/ralus.cfg':
-    ensure  => file,
-    owner   => 'beuser',
-    group   => 'beoper',
-    mode    => '0644',
-    content => template('backupexec/ralus.cfg.erb'),
-    require => Package[$backupexec::params::pkgname],
-    notify  => Service['VRTSralus.init'],
-  }
+  #file { '/etc/VRTSralus/ralus.cfg':
+  #  ensure  => file,
+  #  owner   => 'beuser',
+  #  group   => 'beoper',
+  #  mode    => '0644',
+  #  content => template('backupexec/ralus.cfg.erb'),
+  #  require => Package[$backupexec::params::pkgname],
+  #  notify  => Service['VRTSralus.init'],
+  #}
 
   file { '/etc/init.d/VRTSralus.init':
     ensure => 'link',
