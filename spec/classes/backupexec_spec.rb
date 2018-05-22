@@ -8,9 +8,9 @@ hiera_config = 'spec/fixtures/hiera/hiera.yaml'
 describe 'backupexec' do
   context 'with hiera config on RedHat' do
     let(:hiera_config) { hiera_config }
-    let(:facts) { {:osfamily => 'RedHat'} }
+    let :facts { osfamily: 'RedHat', }
     it { is_expected.to contain_group('beoper') }
-    it { is_expected.to contain_user('beuser').with(:groups => 'beoper') }
+    it { is_expected.to contain_user('beuser').with(groups: 'beoper') }
     it { is_expected.to contain_file('/etc/VRTSralus/ralus.cfg') }
     it { is_expected.to contain_service('VRTSralus.init') }
   end # fin context 'with hiera config on Debian'
