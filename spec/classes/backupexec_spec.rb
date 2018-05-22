@@ -9,6 +9,7 @@ describe 'backupexec' do
   context 'with hiera config on RedHat' do
     let(:hiera_config) { hiera_config }
     let :facts do
+
       {
         osfamily: 'RedHat'
       }
