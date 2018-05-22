@@ -10,7 +10,7 @@ describe 'backupexec' do
     let(:hiera_config) { hiera_config }
     let(:facts)
 
-      { { :osfamily => 'RedHat' } }
+      { :osfamily => 'RedHat' }
 
     it { is_expected.to contain_group('beoper') }
     it { is_expected.to contain_user('beuser').with(:groups => 'beoper') }
