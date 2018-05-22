@@ -11,12 +11,11 @@ describe 'backupexec' do
     let(:facts) do
       {
         :osfamily => 'RedHat',
-        ...
       }
     end
     it { is_expected.to contain_group('beoper') }
     it { is_expected.to contain_user('beuser').with(:groups => 'beoper') }
     it { is_expected.to contain_file('/etc/VRTSralus/ralus.cfg') }
     it { is_expected.to contain_service('VRTSralus.init') }
-  end # fin context "with hiera config on Debian"
+  end # fin context 'with hiera config on Debian'
 end # fin describe 'one'
