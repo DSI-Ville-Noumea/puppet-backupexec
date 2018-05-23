@@ -1,42 +1,68 @@
-
-require 'rake'
-require 'rake/tasklib'
-require 'rspec/core/rake_task'
-require 'rubygems'
 require 'puppetlabs_spec_helper/rake_tasks'
-require 'puppet-lint'
 
-desc "Run the tests"
-RSpec::Core::RakeTask.new(:test) do |t|
-  t.rspec_opts = ['--color', '-f d']
-  t.pattern = 'spec/*/*_spec.rb'
+# load optional tasks for releases
+# only available if gem group releases is installed
+begin
+  require 'puppet_blacksmith/rake_tasks'
+#  require 'voxpupuli/release/rake_tasks'
+  require 'puppet-strings/tasks'
+rescue LoadError
 end
 
-desc "Generate the docs"
-RSpec::Core::RakeTask.new(:doc) do |t|
-  t.rspec_opts = ['--format', 'documentation']
-  t.pattern = 'spec/*/*_spec.rb'
+PuppetLint.configuration.log_format = '%{path}:%{line}:%{check}:%{KIND}:%{message}'
+PuppetLint.configuration.fail_on_warnings = false
+#PuppetLint.configuration.fail_on_warnings = true
+PuppetLint.configuration.send('relative')
+PuppetLint.configuration.send('disable_140chars')
+PuppetLint.configuration.send('disable_class_inherits_from_params_class')
+PuppetLint.configuration.send('disable_documentation')
+PuppetLint.configuration.send('disable_single_quote_string_with_variables')
+
+exclude_paths = %w(
+  pkg/**/*
+  vendor/**/*
+  .vendor/**/*
+  spec/**/*
+)
+PuppetLint.configuration.ignore_paths = exclude_paths
+PuppetSyntax.exclude_paths = exclude_paths
+
+desc 'Run acceptance tests'
+RSpec::Core::RakeTask.new(:acceptance) do |t|
+  t.pattern = 'spec/acceptance'
 end
 
+desc 'Run tests metadata_lint, lint, validate, spec'
+task test: [
+  :metadata_lint,
+  :lint,
+  :validate,
+  :spec,
+]
 
-
-desc 'Run puppet-lint on the manifests'
-task :backuplint do
-  PuppetLint.configuration.with_filename = true
-
-  linter = PuppetLint.new
-  matched_files = FileList['spec/fixtures/modules/backupexec/manifests/**/*.pp']
-
-  matched_files.to_a.each do |puppet_file|
-    linter.file = puppet_file
-    linter.run
+desc "Run main 'test' task and report merged results to coveralls"
+task test_with_coveralls: [:test] do
+  if Dir.exist?(File.expand_path('../lib', __FILE__))
+    require 'coveralls/rake/task'
+    Coveralls::RakeTask.new
+    Rake::Task['coveralls:push'].invoke
+  else
+    puts 'Skipping reporting to coveralls.  Module has no lib dir'
   end
-
-  fail if linter.errors? || (
-    linter.warnings? && PuppetLint.configuration.fail_on_warnings
-    )
 end
 
-
-
-task :default => [:spec_prep, :test, :backuplint, :spec_clean]
+begin
+  require 'github_changelog_generator/task'
+  GitHubChangelogGenerator::RakeTask.new :changelog do |config|
+    version = (Blacksmith::Modulefile.new).version
+    config.future_release = "v#{version}" if version =~ /^\d+\.\d+.\d+$/
+    config.header = "# Changelog\n\nAll notable changes to this project will be documented in this file.\nEach new release typically also includes the latest modulesync defaults.\nThese should not affect the functionality of the module."
+    config.exclude_labels = %w{duplicate question invalid wontfix wont-fix modulesync skip-changelog}
+    config.user = 'dsiNoumea'
+    metadata_json = File.join(File.dirname(__FILE__), 'metadata.json')
+    metadata = JSON.load(File.read(metadata_json))
+    config.project = metadata['name']
+  end
+rescue LoadError
+end
+# vim: syntax=ruby
