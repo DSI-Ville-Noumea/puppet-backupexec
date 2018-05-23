@@ -99,7 +99,7 @@ class backupexec (
   file_line { 'Software\Symantec\Backup Exec For Windows\Backup Exec\Engine\Agents\Agent Directory List_1' :
     ensure  => present,
     path    => '/etc/VRTSralus/ralus.cfg',
-    line    => 'Software\\Symantec\\Backup Exec For Windows\\Backup Exec\\Engine\\Agents\\Agent Directory List_1=sppsbe0.site-mairie.noumea.nc',
+    line    => 'Software\\Symantec\\Backup Exec For Windows\\Backup Exec\\Engine\\Agents\\Agent Directory List_1=SPPSBE0.site-mairie.noumea.nc',
     match   => '^Software\\Symantec\\Backup\ Exec\ For\ Windows\\Backup\ Exec\\Engine\\Agents\\Agent\ Directory\ List_1\=',
     require => Package[$backupexec::params::pkgname],
     notify  => Service['VRTSralus.init'],
@@ -115,7 +115,7 @@ class backupexec (
   file_line { 'Software\Symantec\Backup Exec For Windows\Backup Exec\Engine\Agents\Agent Directory List_3' :
     ensure  => present,
     path    => '/etc/VRTSralus/ralus.cfg',
-    line    => 'Software\\Symantec\\Backup Exec For Windows\\Backup Exec\\Engine\\Agents\\Agent Directory List_3=sppsbe0',
+    line    => 'Software\\Symantec\\Backup Exec For Windows\\Backup Exec\\Engine\\Agents\\Agent Directory List_3=SPPSBE0',
     match   => '^Software\\Symantec\\Backup\ Exec\ For\ Windows\\Backup\ Exec\\Engine\\Agents\\Agent\ Directory\ List_3\=',
     require => Package[$backupexec::params::pkgname],
     notify  => Service['VRTSralus.init'],
